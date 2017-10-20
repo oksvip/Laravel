@@ -11,16 +11,11 @@
 |
 */
 
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
-*/
+// Auth::routes();
+// Route::get('/home', 'HomeController@index');
+// Route::get('/mail', 'MailController@mail');
 
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/mail', 'MailController@mail');
-
-Route::get('/', 'StaticPagesController@home');
-Route::get('/help', 'StaticPagesController@help');
-Route::get('/about', 'StaticPagesController@about');
+Route::get('/', 'StaticPagesController@home')->name('home');            // 首页
+Route::get('/help', 'StaticPagesController@help')->name('help');        // 帮助页
+Route::get('/about', 'StaticPagesController@about')->name('about');     // 关于页
+Route::get('/signup', 'UsersController@create')->name('signup');     // 注册
