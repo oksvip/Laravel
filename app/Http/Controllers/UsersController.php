@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
+use Mail;
 
 class UsersController extends Controller
 {
@@ -14,7 +15,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth', [            
-            'except' => ['show', 'create', 'store', 'index']
+            'except' => ['show', 'create', 'store', 'index', 'confirmEmail']
         ]);
 
         // 只让未登录用户访问注册页面
@@ -65,9 +66,9 @@ class UsersController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-        
-        Auth::login($user);
-        return redirect()->route('users.show', [$user])->with('success', '欢迎，您将在这里开启一段新的旅程～');
+       
+        $this->sendEmailConfirmationTo($user);
+        return redirect('/')->with('success', '验证邮件已发送到你的注册邮箱上，请注意查收。');
     }
 
     /**
@@ -110,5 +111,38 @@ class UsersController extends Controller
         $user->delete();
         return redirect()->back()->with('success', '删除成功！');
     }
+
+    /**
+     * 发送邮件
+     */
+    private function sendEmailConfirmationTo($user)
+    {
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = 'postmaster@iokvip.com';
+        $name = 'Sunrise';
+        $to = $user->email;
+        $subject = '感谢注册Sample应用，请确认您的邮箱！';
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
+            $message->from($from, $name)->to($to)->subject($subject);
+        });
+    }
+
+    /**
+     * 激活邮箱
+     */
+    public function confirmEmail($token)
+    {
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+
+        Auth::login($user);
+        return redirect()->route('users.show', [$user])->with('success', '恭喜您，邮箱激活成功！');
+    }
+
 
 }

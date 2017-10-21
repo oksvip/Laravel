@@ -23,4 +23,4 @@ Route::resource('users', 'UsersController');                            // 用�
 Route::get('login', 'SessionsController@create')->name('login');        // 登录
 Route::post('login', 'SessionsController@store')->name('login');        // 登录操作
 Route::delete('logout', 'SessionsController@destroy')->name('logout');   // 注销
-
+Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');   // 激活链接

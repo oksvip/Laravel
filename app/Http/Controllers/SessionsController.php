@@ -42,7 +42,12 @@ class SessionsController extends Controller
        ];
 
        if (Auth::attempt($credentials, $request->has('remember'))) {
-            return redirect()->intended(route('users.show', [Auth::user()]))->with('success', '欢迎回来！');
+            if (Auth::user()->activated) {
+                return redirect()->intended(route('users.show', [Auth::user()]))->with('success', '欢迎回来！');
+            }
+
+            Auth::logout();
+            return redirect('/')->with('warning', '您的帐号未激活，请检查邮箱中的注册邮件进行激活。');
        }
 
        return redirect()->back()->with('danger', '很抱歉，您的邮箱和密码不匹配');
