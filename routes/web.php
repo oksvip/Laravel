@@ -23,8 +23,9 @@ Route::resource('users', 'UsersController');                            // 用�
 Route::get('login', 'SessionsController@create')->name('login');        // 登录
 Route::post('login', 'SessionsController@store')->name('login');        // 登录操作
 Route::delete('logout', 'SessionsController@destroy')->name('logout');  // 注销
-Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');                   // 激活链接
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');                    // 激活链接
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');    // 密码重置页面
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');      // 发送重设链接
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');     // 密码更新页面
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');                   // 执行密码更新操作
+Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);                            // 微博
