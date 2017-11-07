@@ -2,7 +2,7 @@
 
 * 产品名称：「sample  - PHP & Laravel」
 * 项目代码：sample，Laravel
-* 官方地址：https://sample.dev/
+* 官方地址：http://sample.dev/
 
 PHPHub 是 PHP 和 Laravel 的中文社区，致力于推动 Laravel, php-fig 等国外 PHP 新技术, 新理念在中国的发展。
 
